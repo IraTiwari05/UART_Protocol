@@ -1,1 +1,15 @@
-"*.vcd\n*.wdb\n*.log\n*.jou\n*.xpr\n*.dir\n.sim\n.cache" 
+*.log
+*.jou
+*.wdb
+*.vcd
+*.pb
+*.xml
+*.xpr
+*.runs/
+*.sim/
+*.cache/
+*.webtalk/
+xsim.dir/
+*.str
+*.tmp
+*.backup
