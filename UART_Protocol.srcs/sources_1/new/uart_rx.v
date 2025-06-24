@@ -26,6 +26,7 @@ always @(posedge clk or posedge rst)begin
       IDLE:begin
       rx_done<=0;
       parity_error<=0;
+      bit_idx=0;
           if(rx==0)begin
              state<=START;
           end
@@ -38,9 +39,11 @@ always @(posedge clk or posedge rst)begin
            else begin
               state<=IDLE;
            end
+           bit_idx=0;
       end
       DATA:begin
-           shift_reg<={rx,shift_reg[7:1]};
+           shift_reg <= shift_reg >> 1;
+            shift_reg[7] <= rx; 
            bit_idx<=bit_idx+1;
            if(bit_idx==3'd7)begin
                state<=(parity_en)?PARITY:STOP;
@@ -48,7 +51,7 @@ always @(posedge clk or posedge rst)begin
       end
       PARITY:begin
         sampled_parity<=rx;
-        parity_bit=^shift_reg;
+        parity_bit<=^shift_reg;
         state<=STOP;
     end
     STOP:begin

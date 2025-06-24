@@ -22,35 +22,43 @@ output reg tx, output reg tx_busy
   else begin
   
   case(state)
-   IDLE:begin
-     tx<=1; tx_busy<=0;
+   IDLE:begin 
+     tx<=1; tx_busy<=0; bit_idx <= 0;
        if(tx_start)begin
        tx_busy<=1;
-       state<=IDLE;
+       state<=START;
        parity_bit<=^data_in;
+       shift_reg<=data_in;
        end
    end
    START:begin
-         shift_reg<=data_in;
+        if(baud_tick)begin 
          state<=DATA;
          tx<=0;
+         end
    end
    DATA:begin
+   if(baud_tick)begin 
         tx<=shift_reg[0];
         shift_reg<=shift_reg>>1;
         bit_idx<=bit_idx+1;
         if(bit_idx==3'd7)begin
           state<=(parity_en)?PARITY:STOP;
         end
+     end
    end
    PARITY:begin
+   if(baud_tick)begin
          tx<=parity_bit;
          state<=STOP;
+       end
    end
    STOP:begin
+   if(baud_tick)begin
        tx<=1'b1;
        state<=IDLE;
        tx_busy<=0;
+      end
       end
     endcase
     end
