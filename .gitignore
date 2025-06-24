@@ -1,1 +1,1 @@
-"*.jou\n*.log\n*.pb\n*.bit\n*.runs\n.sim\n.cache\n.hw\n*.ip_user_files" 
+"*.vcd\n*.wdb\n*.log\n*.jou\n*.xpr\n*.dir\n.sim\n.cache" 
